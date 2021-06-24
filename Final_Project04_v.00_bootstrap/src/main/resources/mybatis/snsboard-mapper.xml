@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="snsboard">
+
+  	<resultMap type="entireBoardDto" id="entireBoardMap">
+  		<result property="entireBoardSeq" column="ENTIREBOARDSEQ"/>
+  		<result property="boardKind" column="BOARDKIND"/>
+  		<result property="boardDate" column="BOARDDATE"/>
+  		<result property="boardTitle" column="BOARDTITLE"/>
+  		<result property="boardContents" column="BOARDCONTENTS"/>
+  		<result property="userId" column="USERID"/>
+  		<result property="userSeq" column="USERSEQ"/>
+  		<result property="snsImg" column="SNSIMG"/>
+  		<result property="likeCount" column="LIKECOUNT"/>
+  	</resultMap>
+
+	<select id="snsBoardList" resultType="entireBoardDto">
+		SELECT *
+		FROM entireBoard
+		WHERE boardKind = 1
+		ORDER BY boardDate ASC
+	</select>
+
+</mapper>

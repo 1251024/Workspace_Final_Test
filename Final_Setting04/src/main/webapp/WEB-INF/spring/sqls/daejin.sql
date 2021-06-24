@@ -1,0 +1,17 @@
+DROP SEQUENCE farmSeq;
+DROP TABLE weekendFarm;
+
+CREATE SEQUENCE farmSeq;
+
+CREATE TABLE weekendFarm(
+	farmSeq NUMBER PRIMARY KEY NOT NULL,
+	farmName VARCHAR2(100) NOT NULL,
+	farmAddress VARCHAR2(200) NOT NULL,
+	farmPhone NUMBER(30) NOT NULL
+	
+);
+
+INSERT INTO weekendFarm
+VALUES (farmSeq.NEXTVAL, '대진이네 농장', '경기도 고양시', '01097954578');
+
+SELECT * FROM WEEKENDFARM;
