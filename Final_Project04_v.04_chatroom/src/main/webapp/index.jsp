@@ -19,6 +19,10 @@
 	<br/>
 	<a href="header.do">보옥 헤더</a>
 	<br/>
+	<a href="chatboard_home.do">보옥 채팅 게시판</a>
+	<br/>
+	<a href="chat.do">보옥 채팅</a>
+	<br/>
 	<a href="loginform.do">로그인</a>
 	<br/>
 	<a href="marketplace.do">중고시장</a>
