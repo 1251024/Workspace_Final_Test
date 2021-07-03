@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://Java.sun.com/xml/ns/javaee"
+	xmlns:web="http://java.sun.com/xml/ns/javaee"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee https://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+	version="2.5">
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>/WEB-INF/spring/appServlet/applicationContext.xml
+		</param-value>
+	</context-param>
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener
+		</listener-class>
+	</listener>
+	<servlet>
+		<servlet-name>appServlet</servlet-name>
+		<servlet-class>
+			org.springframework.web.servlet.DispatcherServlet<!-- 서블릿 역할, 요청받고 요청할때 
+				핸들러매핑을 통해서 컨트롤러에 전달하는 역할, 컨트롤러가 mav를 리턴해주는데 뷰리졸버로 받아서 뷰네임을 찾아서 보내줌 -->
+		</servlet-class>
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>
+				<!-- servlet-context는 DispatcherServlet 설정파일!! -->
+				/WEB-INF/spring/appServlet/servlet-context.xml
+				<!-- aop 설정파일 -->				
+				/WEB-INF/spring/appServlet/aop-context.xml
+				<!-- security -->
+				/WEB-INF/spring/appServlet/security-context.xml
+			</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>appServlet</servlet-name>
+		<url-pattern>*.do</url-pattern>
+		<!-- /은 ./a, *.do는 /a.do -->
+	</servlet-mapping>
+	
+
+	<!-- filter는 요청받고 응답할때 적용됨(서버의 밖에서 존재) -->
+	<filter>
+		<filter-name>encodingFilter</filter-name>
+		<filter-class>org.springframework.web.filter.CharacterEncodingFilter
+		</filter-class>
+		<init-param>
+			<param-name>encoding</param-name>
+			<param-value>UTF-8</param-value>
+		</init-param>
+		<init-param>
+			<param-name>forceEncoding</param-name>
+			<param-value>true</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>encodingFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
+
+	<!-- Logfilter 끼우기 -->
+	<filter>
+		<filter-name>logFilter</filter-name>
+		<filter-class>com.mvc.upgrade.common.filter.LogFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>logFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	
+</web-app>

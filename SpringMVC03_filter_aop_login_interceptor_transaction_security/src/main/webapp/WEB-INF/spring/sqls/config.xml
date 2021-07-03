@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd" >
+<configuration>
+
+	<typeAliases>
+		<typeAlias type="com.mvc.upgrade.model.dto.MYBoardDto" alias="myBoardDto"/>
+		<typeAlias type="com.mvc.upgrade.model.dto.MYMemberDto" alias="myMemberDto"/>
+	</typeAliases>
+
+	<!-- resource: src/main/resources 와 같음 -->
+	<!-- mappers안에 매퍼들, 매퍼스는 하나고 매퍼는 여러개 -->
+	<mappers>
+		<mapper resource="/mybatis/myboard-mapper.xml"/>
+		<mapper resource="/mybatis/mymember-mapper.xml"/>
+	</mappers>
+
+</configuration>
