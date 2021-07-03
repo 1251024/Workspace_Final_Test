@@ -1,0 +1,152 @@
+■ SpringMVC03 설정잡는 거 순서 (boot는 특정기능 짤때 사용가능, boot만 사용하는거 x)
+01. pom.xml : ojdbc6, mybatis, mybatis-spring, commons-dbcp, spring-orm	//스프링 mvc 웹을 위해서 추가한건 db와 연관 있음
+	dependencies 사이에 추가하기!
+	1-1. ojdbc6 : mvn repository에서 oracle » ojdbc6 에서 카피하고 dependencies 밖에 repositories에 
+					datanucleus랑 url을 추가해줘야함 또는 maven central repository에서 ojdbc » ojdbc6 등 다른 
+					거 써도 되는데 기본적으로 메이븐이 가지고있는 저장소에 없어서 가져오는 경로는 다 다르니까 상황에따라 가져오기 usages가장 높은거 
+					쓰는게 가장 안정적임..
+	1-2. mybatis : org.mybatis » mybatis에서 최신버전카피
+	1-3. mybatis-spring : org.mybatis » mybatis-spring 에서 최신버전카피 
+	1-4. commons-dbcp : DBCP(스프링 풀과 비슷, 데이타베이스와 연결하는 객체 Connection(datasource)저장하는 객체, 커넥션 풀)
+	5.spring-orm : Object-Relational-Mapping (자바객체와 rdb연결하는 객체 )org.springframework » spring-orm을 가져와서 <version>에 ${org.springframework-version}를 
+			써준다 3.1.1버전 쓰는데 무조건 최신 버전 쓰면 beans, core랑 충돌남, 충돌나는 건 Dependency Hierarchy에서 확인할 수 있음 
+					
+02. web.xml : applicationContext.xml, mapping(*.do), encodingFilter 
+				(root-context.xml을 appServlet밑에 넣고, 이름을 application-context.xml로 변경하고 context-param에서 경로 수정(/appServlet추가) )
+			  ★encodingFilter 추가 방법
+				2-1. filter 
+					-name :encodingFilter, class :org.springframework.web.filter.CharacterEncodingFilter
+					init-param: encoding (utf-8)/forceEncoding(true)
+				2-2. filter-mapping
+					-filter-class 잘쓰면 설명이 나온다
+					-name(filter와 동일) url-pattern(/*)
+					
+						<filter>
+							<filter-name>encodingFilter</filter-name>
+							<filter-class>org.sprinframework.web.filter.CharacterEncodingFilter
+							</filter-class>
+							<init-param>
+								<param-name>encoding</param-name>
+								<param-value>UTF-8</param-value>
+							</init-param>
+							<init-param>
+								<param-name>forceEncoding</param-name>
+								<param-value>true</param-value>
+							</init-param>
+						</filter>
+						<filter-mapping>
+							<filter-name>encodingFilter</filter-name>
+							<url-pattern>/*</url-pattern>
+						</filter-mapping>
+						
+					
+03. /WEB-INF/spring/sqls/test.sql  //파일 만들어서 db연결해서 테이블 만들기 
+
+
+04. dto, dao, biz, controller	//com.mvc.upgrade하위로 들어가게해야함(servlet-context파일의 component-scan base-package로 충돌 날 수 있음)
+	1. com.mvc.upgrade.model.dto
+		//클래스로 만들기
+	2. com.mvc.upgrade.model.dao
+		//board-mapper.xml에서 지정해준 namespace
+		String NAMESPACE = "myboard.";
+	
+		//daoimpl에 sqlSessionTeplate 를 가져와서 연결해준다.
+		@Autowired
+		private SqlSessionTemplate sqlSession;
+	3. com.mvc.upgrade.model.biz
+		@Autowired
+		private MYBoardDao dao;//프록시객체를 만들때 인터페이스 통해서 만들기때문에 dao인터페이스로 적어줘야한다.
+	
+	4. com.mvc.upgrade.controller
+
+
+05. src/main/resources/mybatis/myboard-mapper.xml	(xml 생성시 mybatis -dtd 파일 설정해서 연결하기)
+	cache-ref삭제
+	mapper의 namespace 설정해서 이름 정하기
+	//mybatis - 해당 파일에서 sql문 작성
+	//해당 파일의 경로는 config.xml에서 설정해준다.
+
+06. src/main/resources/mybatis/db.properties ///src/main/resources는 resource를 가르키게되어있음(deployment Assembly에서 확인됨 /resources가 웹 inf 클래시스랑 연결되어있는지 확인가능)
+	(mybatis - driver 연결)
+	driverclassname, url, username, password
+
+07. /WEB-INF/spring/sqls/config.xml 	//xml 생성시 config dtd설정 연결
+	(mybatis - mapper.xml경로 설정)
+	<mappers> 안에다 <mapper resource="경로">
+	//resource: src/main/resources 와 같음 
+	<typeAliases> 안에 <typeAlias type="원래 경로(dto의 경로)" alias="별칭(myBoardDto)">
+	//mapper의 typeAlias도 여기서 정해서 별칭으로 간단하게 쓸 수 있다.
+	
+	참고:contextroot는 물리적인 디렉토리(배포단위) 경로
+	참고:/WEB-INF/=외부에서 접속불가능한 폴더,그래서 뷰리졸버가 필요
+	
+08. applicationContext.xml(프로젝트 전체에 공통으로 사용되는 객체 설정), servlet-context.xml(viwqresolver, 객체 기본 경로 설정)
+	★applicationContext에서 mybatis설정
+		1. db.properties 객체생성 
+			class는 org.springframework.beans.factory.config.PropertyPlaceholderConfigurer
+			property 설정하기 : name은 locations, list의 value로 classpath:mybatis/db.properties(classpath가 src/main/resources자동으로 잡아줌)
+		2. dataSource 객체 생성(connection con과 같은 역할)
+			class는 org.apache.commons.dbcp2.BasicDataSource
+			property 설정하기 : driverclassname, url, username, password
+		3. sqlSession 객체 생성(mybatis SqlSessionFactory 객체만드는것)
+			class는 org.mybatis.spring.SqlSessionFactoryBean
+			property 설정하기 : dataSource의 참조는 dataSource, configLocation의 값은 config.xml 경로정해주기
+		4.sqlSessionTemplate객체 생성(sqlSession을 open/close안해도되게)
+			class는 org.mybatis.spring.SqlSessionTemplate
+			constructor-arg 생성자 참조는 sqlSession
+			
+			
+_filter
+09. com/mvc/upgrade/common/filter/LogFilter (impl javax.servlet.Filter)
+
+10. web.xml : filter 설정
+
+	<filter>
+		<filter-name>logFilter</filter-name>
+		<filter-class>org.mvc.upgrade.common.LogFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>logFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	
+	
+_aop
+11. pom.xml : aspectjweaver, aspectjrt
+12. com/mvc/upgrade/common/aop/LogAop
+13. WEB-INF/spring/appServlet/aop-context.xml	(aop관련된 설정파일)
+14. web.xml : aop-context.xml 추가(DispatcherServlet의 init-param)
+15. src/main/resources/log4j.xml (logger 추가 및 log level 변경)
+
+
+
+_login
+16. pom.xml : jackson-core-asl, jackson-mapper-asl (spring 4.x 버전에서는 다른거 사용! / 3.x까지 밖에 사용 못함!)
+17. WEB-INF/spring/sqls/test.sql (MYMEMBER)
+18. dto, dao, biz, controller
+19. src/main/resources/mybatis/mymember-mapper.xml
+20. /WEB-INF/spring/sqls/config.xml
+
+컨트롤러에서 리퀘스트매핑해주고 jsp연결해준다
+
+
+_interceptor
+21. com/mvc/upgrade/common/interceptor/LoginInterceptor (impl HandlerInterceptor)
+22. WEB-INF/spring/appServlet/servlet-context.xml
+
+
+_transaction
+23. (MYBoard) dao, biz, controller
+	public String test();
+	
+24. servlet-context.xml : tx 설정(transaction)
+25. applicationContext.xml : transactionManager(원래는 각각의 db가 트랜잭션 관리하는데, spring의 transaction이 동작하게 하려고 설정)
+26. index.jsp
+
+
+_security
+27. pom.xml: spring-security-web
+28. /WEB-INF/spring/appServlet/security-context.xml (security)
+29. web.xml
+30. (MYMEMBER) dao, biz, controller
+31. mymember-mapper.xml (login에서 'AND MEMBERPW = #{memberpw}' 삭제)
