@@ -31,7 +31,7 @@
 </head>
 <body>
 
-	<c:set var="profile" value='<%=session.getAttribute("login")%>' />
+	<!--<c:set var="profile" value='<%=session.getAttribute("login")%>' />-->
 
 
 

@@ -3,20 +3,23 @@
 <mapper namespace="chat">
 
 
-
+<!-- 채팅방만들기 -->
 <insert id = "createRoom">
 insert into CHATROOM (USER_user_id , TUTOR_USER_user_id, CLASS_class_id) 
 values(#{USER_user_id}, #{TUTOR_USER_user_id} , #{CLASS_class_id} )
-
+<!-- 클래스id로 들어가는것 -->
 
 </insert>
 
-
+<!-- 채팅방 입장 선생님(튜터id)과 학생(유저id) 클래스 id 까지 같아야 한다. -->
 <select id ="isRoom" resultType = "ChatRoomDto">
 
 select * from CHATROOM WHERE USER_user_id = #{USER_user_id} and TUTOR_USER_user_id = #{TUTOR_USER_user_id} 
 and CLASS_class_id = #{CLASS_class_id} 
 </select>
+
+<!-- 메세지입력했을때 저장해주는 것
+보낸사람, 받는사람, 메세지 내용  -->
 
 <insert id = "insertMessage">
 insert into MESSAGE (message_sender , message_receiver, message_content, 
