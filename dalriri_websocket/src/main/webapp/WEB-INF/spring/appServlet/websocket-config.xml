@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:websocket="http://www.springframework.org/schema/websocket"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/websocket http://www.springframework.org/schema/websocket/spring-websocket-4.3.xsd">
+
+	<websocket:handlers allowed-origins="*" >
+        <websocket:mapping handler="handlerChat" path="/chat" />
+        <websocket:sockjs websocket-enabled="true" />
+    </websocket:handlers>
+    <!-- URL에서 /chat 라는 요청이 오면 com.chat.handler.HandlerChat에서 처리 하겠다라는 의미 입니다. 
+    참고로 웹소켓이 처음 연결시 클라이언트로부터 http://localhost/chat_test/chat/info?t=1590294216548 의 형태로 요청이 오고 이후 웹소켓 연결이 됩니다
+    -->
+    
+    
+    
+    <bean id="handlerChat" class="com.chat.handler.HandlerChat" />
+    
+</beans>
