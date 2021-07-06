@@ -26,12 +26,7 @@
 	<context:component-scan base-package="com.sp.ex" />
 	
 	
-	<websocket:handlers>
-		<websocket:mapping handler="EchoHandler" path="/echo" />
-		<websocket:sockjs />
-	</websocket:handlers>
 	
-    <beans:bean id="EchoHandler" class="com.sp.ex.EchoHandler" />
     
 	
 	

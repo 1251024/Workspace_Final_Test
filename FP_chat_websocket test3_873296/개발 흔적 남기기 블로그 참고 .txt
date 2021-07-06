@@ -1,3 +1,19 @@
 개발 흔적 남기기 블로그 참고 주소
 
 https://myhappyman.tistory.com/101?category=873296
+
+-----------------------------------------------------------
+
+TRACE: org.springframework.web.servlet.view.InternalResourceViewResolver - View with key [chat] served from cache
+TRACE: org.springframework.web.servlet.DispatcherServlet - Rendering view [org.springframework.web.servlet.view.JstlView: name 'chat'; URL [/WEB-INF/views/chat.jsp]] 
+DEBUG: org.springframework.web.servlet.view.JstlView - View name 'chat', model {}
+DEBUG: org.springframework.web.servlet.view.JstlView - Forwarding to [/WEB-INF/views/chat.jsp]
+DEBUG: org.springframework.web.servlet.DispatcherServlet - Completed 200 OK, headers={}
+TRACE: org.springframework.web.servlet.DispatcherServlet - GET "/ex/echo/", parameters={}, headers={masked} in DispatcherServlet 'appServlet'
+TRACE: org.springframework.web.socket.server.support.WebSocketHandlerMapping - Mapped to HandlerExecutionChain with [org.springframework.web.socket.sockjs.support.SockJsHttpRequestHandler@64a7ad02] and 3 interceptors
+DEBUG: org.springframework.web.socket.sockjs.transport.handler.DefaultSockJsService - Processing transport request: GET http://localhost:8787/ex/echo/
+TRACE: org.springframework.web.servlet.DispatcherServlet - No view rendering, null ModelAndView returned.
+DEBUG: org.springframework.web.servlet.DispatcherServlet - Completed 200 OK, headers={masked}
+
+
+뷰를 못찾는다...?

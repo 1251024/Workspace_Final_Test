@@ -4,6 +4,9 @@
 <!DOCTYPE html>
 <html>
 <head>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script>
+<script type="text/javascript"
+	src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.1.5/sockjs.min.js"></script>
 <meta charset="UTF-8">
 
 <title>chat</title>
@@ -47,40 +50,8 @@
 		}
 	</style>
 
-<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script>
-<script type="text/javascript"
-	src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.1.5/sockjs.min.js"></script>
+
 </head>
-
-
-<body>
-	<div id="container" class="container">
-		<h1>채팅</h1>
-		<input type="hidden" id="sessionId" value="">
-		
-		<div id="chating" class="chating">
-		</div>
-		
-		<div id="yourName">
-			<table class="inputTable">
-				<tr>
-					<th>사용자명</th>
-					<th><input type="text" name="userName" id="userName"></th>
-					<th><button onclick="chatName()" id="startBtn">이름 등록</button></th>
-				</tr>
-			</table>
-		</div>
-		<div id="yourMsg">
-			<table class="inputTable">
-				<tr>
-					<th>메시지</th>
-					<th><input id="chatting" placeholder="보내실 메시지를 입력하세요."></th>
-					<th><button onclick="send()" id="sendBtn">보내기</button></th>
-				</tr>
-			</table>
-		</div>
-	</div>
-</body>
 
 
 
@@ -88,10 +59,11 @@
 	var ws;
 
 	function wsOpen(){
-		ws = new WebSocket("ws://" + location.host + "/chat");
+		ws = new WebSocket("ws://" + location.host + "/ex");
 		//		ws = new WebSocket("ws://localhost:8787/chat");
 		
 		wsEvt();
+		console.log(ws);
 	}
 		
 	function wsEvt() {
@@ -156,6 +128,36 @@
 		$('#chatting').val("");
 	}
 </script>
+
+
+<body>
+	<div id="container" class="container">
+		<h1>채팅</h1>
+		<input type="hidden" id="sessionId" value="">
+		
+		<div id="chating" class="chating">
+		</div>
+		
+		<div id="yourName">
+			<table class="inputTable">
+				<tr>
+					<th>사용자명</th>
+					<th><input type="text" name="userName" id="userName"></th>
+					<th><button onclick="chatName()" id="startBtn">이름 등록</button></th>
+				</tr>
+			</table>
+		</div>
+		<div id="yourMsg">
+			<table class="inputTable">
+				<tr>
+					<th>메시지</th>
+					<th><input id="chatting" placeholder="보내실 메시지를 입력하세요."></th>
+					<th><button onclick="send()" id="sendBtn">보내기</button></th>
+				</tr>
+			</table>
+		</div>
+	</div>
+</body>
 
 
 <!--
