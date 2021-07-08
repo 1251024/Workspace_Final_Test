@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="liketable">
+
+	<!-- 좋아요 추가 -->
+	<insert id="pricture_heart_save" parameterType="likeTableDto">
+		INSERT INTO likeTable
+		VALUES (likeSeq.NEXTVAL, 1, 'test01', 28)
+	</insert>
+	
+	<update id="picture_heart_up" parameterType="entireBoardDto">
+		UPDATE entireBoard SET likeCount = likeCount + 1
+		WHERE entireBoardSeq = #{entireBoardSeq}
+	</update>
+	
+	<!-- 좋아요 취소 -->
+	<delete id="pricture_heart_remove" parameterType="likeTableDto">
+		DELETE FROM likeTable
+		WHERE entireBoardSeq = #{entireBoardSeq}
+	</delete>
+	
+	<update id="picture_heart_down" parameterType="entireBoardDto">
+		UPDATE entireBoard SET likeCount = likeCount - 1
+		WHERE entireBoardSeq = #{entireBoardSeq}
+	</update>
+	
+	<!-- 좋아요 추가 삭제시 좋아유 갯수 가져오기 -->
+	<select id="picture_heart_count" parameterType="entireBoardDto" resultType="entireBoardDto">
+		SELECT likeCount
+		FROM entireBoard
+		WHERE entireBoardSeq = #{entireBoardSeq}
+	</select>
+
+</mapper>

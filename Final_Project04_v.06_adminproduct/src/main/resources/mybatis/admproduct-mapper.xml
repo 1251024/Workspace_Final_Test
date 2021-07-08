@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="adminProduct">
+
+
+	<select id="adminProductList" resultType="productDto">
+		SELECT *
+		FROM Product
+		WHERE userRole = 'ADMIN'
+		ORDER BY productPrice DESC
+	</select>
+
+	<select id="adminProductOne" resultType="productDto">
+		SELECT *
+		FROM Product
+		WHERE productSeq = #{productSeq}
+	</select>
+	
+	<insert id="adminProductInsert" parameterType="productDto">
+		INSERT INTO Product
+		VALUES (productSeq.NEXTVAL, #{productName}, #{productPrice}, NULL, SYSDATE, #{productInfo}, NULL, NULL, 'Y', 'ADMIN', 1, 'test', NULL, NULL)
+	</insert>
+	
+</mapper>
+
+	
