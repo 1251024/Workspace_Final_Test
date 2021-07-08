@@ -17,4 +17,25 @@ public class ChatController {
 
 		return "chat";
 	}
+	
+
+//	//글작성
+//	@RequestMapping("/chatroom.do")
+//	public String insertForm() {
+//	
+//		return "chat.do";
+//	}
+//	
+	
+//	
+//	@RequestMapping(value = "/writeres.do", method = RequestMethod.POST)
+//	public String insertRes(MYBoardDto dto) {
+//		
+//		if(biz.insert(dto) > 0) {
+//			return "redirect:list.do";//"redirect:넘겨줄 context 경로"하면 자동으로 센드 리다이렉트 해줌
+//		}
+//		
+//		
+//		return "redirect:writeform.do";
+//	}
 }

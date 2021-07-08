@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd" >
+<configuration>
+
+	<typeAliases>
+		<typeAlias type="com.mvc.upgrade.model.dto.UserDto" alias="userDto"/>
+		<typeAlias type="com.mvc.upgrade.chat.dto.ChatRoomDto" alias="chatroomDto"/>
+		<typeAlias type="com.mvc.upgrade.chat.dto.MessageDto" alias="messageDto"/>
+	</typeAliases>
+	
+	<!-- resource : src/main/resources 와 같음 -->
+	<mappers>
+		<mapper resource="/mybatis/user-mapper.xml"/>
+		<mapper resource="/mybatis/chatroom-mapper.xml"/>
+		<mapper resource="/mybatis/message-mapper.xml"/>
+	</mappers>
+	
+	
+
+</configuration>
